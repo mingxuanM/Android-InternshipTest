@@ -9,9 +9,10 @@ import android.support.v7.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    // Initialized with empty array rather than null, since RecyclerViewAdapter.getItemCount needs to access its length.
     private String[] teasers = {};
 
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout; // The layout to implement "pull down to refresh"
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
@@ -35,10 +36,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerViewAdapter(teasers, this);
 
+        // fetch the links and update them to the adapter
         new GetJson(adapter, swipeRefreshLayout).execute();
 
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
@@ -47,11 +48,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             isRefresh = true;
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-
+                    // fetch the links and update them to the adapter
                     new GetJson(adapter, swipeRefreshLayout).execute();
-
-                    //adapter.updateArray(teasers);
-
                     isRefresh = false;
                 }
             }, 3000);

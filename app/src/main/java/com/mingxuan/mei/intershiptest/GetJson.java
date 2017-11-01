@@ -22,6 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Retrieve Json from dribbble using HttpsURLConnection.
  * cURL command:
  * curl -H "Authorization: Bearer a62b88ea291c0d0e5b9295fdb8930936f945027bb84ff747ef6b89f8a9cd4da1" https://api.dribbble.com/v1/shots?sort=recent&page=1&per_page=30
+ * Then parse the JSONArray to retrieve the teasers' URLs.
  */
 
 class GetJson extends AsyncTask<Void, Void, String[]> {
@@ -88,7 +89,7 @@ class GetJson extends AsyncTask<Void, Void, String[]> {
 }
 //    /**
 //     * Created by Mingxuan on 10/31/2017.
-//     * Read the JSONArray retrieved by GetJson.
+//     * The thread to read the JSONArray retrieved by GetJson.
 //     * Select teaser from images of each entry.
 //     */
 //    Thread jsonThread = new Thread(new Runnable() {
