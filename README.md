@@ -1,5 +1,6 @@
 ## The Net Circle internship test
-An Android app that will retrieve 30 images from dribbble's API and display them in a ``RecyclerView``
+An Android app that will retrieve 30 images from dribbble's API and display them in a ``RecyclerView``.
+
 ``SwipeRefreshLayout`` is implemented to achieve "pull to refresh" feature.
 
 ![Screenshot](https://github.com/mingxuanM/InternshipTest/tree/master/screenshots/Screenshot_1509508821.png)
