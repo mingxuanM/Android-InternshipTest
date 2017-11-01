@@ -54,4 +54,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     public int getItemCount() {
         return teasers.length;
     }
+
+    public void updateArray(String[] teasers) {
+        this.teasers = teasers;
+    }
 }

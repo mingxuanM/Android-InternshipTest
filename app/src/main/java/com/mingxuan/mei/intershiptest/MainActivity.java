@@ -1,70 +1,61 @@
 package com.mingxuan.mei.intershiptest;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
+    private String[] teasers = {};
 
-public class MainActivity extends AppCompatActivity {
-
-    String[] teasers = null;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    private boolean isRefresh = false;//if it's refreshing
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        jsonThread.start();
-
-        while(jsonThread.getState()!=Thread.State.TERMINATED){
-            //Do nothing
-        }
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerViewAdapter(teasers, this);
+
+        new GetJson(adapter, swipeRefreshLayout).execute();
+
         recyclerView.setAdapter(adapter);
+
     }
 
-    /**
-     * Created by Mingxuan on 10/31/2017.
-     * Read the JSONArray retrieved by GetJson.
-     * Select teaser from images of each entry.
-     */
-    Thread jsonThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            GetJson getJson = new GetJson();
-            try {
-                String contents = getJson.execute().get();
-                JSONArray contentsJSON = new JSONArray(contents);
-                teasers = new String[contentsJSON.length()];
+    @Override
+    public void onRefresh() {
+        if (!isRefresh) {
+            isRefresh = true;
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
 
-                for (int i = 0; i < contentsJSON.length(); i++) {
-                    JSONObject entry = contentsJSON.getJSONObject(i);
-                    teasers[i] = entry.getJSONObject("images").getString("teaser");
+                    new GetJson(adapter, swipeRefreshLayout).execute();
+
+                    //adapter.updateArray(teasers);
+
+                    isRefresh = false;
                 }
-
-                //Test the URLs retrieved.
-                // Log.d("testTeasers ", Arrays.toString(teasers));
-
-            } catch (InterruptedException | ExecutionException | JSONException e) {
-                e.printStackTrace();
-            }
+            }, 3000);
         }
-    });
+    }
+
 }
