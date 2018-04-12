@@ -4,7 +4,6 @@ An Android app that will retrieve 30 images from dribbble's API and display them
 ``SwipeRefreshLayout`` is implemented to achieve "pull to refresh" feature.
 
 ![Screenshot](https://raw.githubusercontent.com/mingxuanM/InternshipTest/tree/master/screenshots/Screenshot_1509508821.png)
-[[https://raw.githubusercontent.com/mingxuanM/InternshipTest/tree/master/screenshots/Screenshot_1509508821.png|alt=octocat]]
 
 ### Structure:
 * **MainActivity.java**: The main class that create the Views and call the AsyncTask.
